@@ -51,5 +51,4 @@ public class ProductVariant implements Serializable {
 
     @Column(name = "sku")
     private String sku;
-
 }
