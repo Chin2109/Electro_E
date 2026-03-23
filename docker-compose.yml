@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: elec-database
+    environment:
+      POSTGRES_DB: elec
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: apppass
+      TZ: Asia/Ho_Chi_Minh
+    command: ["postgres", "-c", "timezone=UTC"]
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appuser -d elec"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: elec-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/elec?options=-c%20timezone=UTC
+      - SPRING_DATASOURCE_USERNAME=appuser
+      - SPRING_DATASOURCE_PASSWORD=apppass
+      - JAVA_TOOL_OPTIONS=-Duser.timezone=UTC
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

@@ -1,0 +1,41 @@
+# --- IDE Specific Files ---
+.idea/                  # File cấu hình của IntelliJ
+*.iml                   # File project của IntelliJ
+.vscode/                # File cấu hình của VS Code
+.history/               # Local history của VS Code
+*.sublime-project
+*.sublime-workspace
+
+# --- Java / Backend (Maven/Gradle) ---
+target/                 # File build của Maven
+build/                  # File build của Gradle
+.gradle/
+bin/
+*.class
+*.jar
+*.war
+*.zip
+*.tar.gz
+
+# --- Frontend (Node.js/React/Vue) ---
+node_modules/           
+dist/                   
+.next/
+out/
+build-fe/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# --- OS & Misc ---
+.DS_Store               # File rác của macOS
+Thumbs.db               # File rác của Windows
+.env                    # File chứa mật khẩu, API Key 
+.env.local
+
+# --- Docker & Database ---
+postgres_data/          # Nếu map volume ra thư mục ngoài
+db_data/                # Tên phổ biến khác của volume database
+pgadmin_data/           # Nếu có dùng pgAdmin docker
+.docker/                # File cấu hình riêng của Docker
