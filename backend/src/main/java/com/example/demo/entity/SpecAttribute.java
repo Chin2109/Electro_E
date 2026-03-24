@@ -39,4 +39,7 @@ public class SpecAttribute implements Serializable {
     @Column(name = "unit")
     private String unit;
 
+    @Column(name = "status", nullable = false)
+    private Long status;
+
 }

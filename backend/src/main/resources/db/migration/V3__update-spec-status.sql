@@ -1,0 +1,2 @@
+ALTER TABLE spec_attribute
+ADD COLUMN status BIGINT NOT NULL DEFAULT 1;

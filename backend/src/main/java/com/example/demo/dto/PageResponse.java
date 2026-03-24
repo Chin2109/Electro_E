@@ -2,6 +2,7 @@ package com.example.demo.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -18,4 +19,15 @@ public class PageResponse<T> {
     private long totalElements; // Tổng số bản ghi trong DB
     private int totalPages;    // Tổng số trang
     private boolean last;      // Có phải trang cuối cùng không
+
+    public static <T> PageResponse<T> fromPage(Page<T> page) {
+        return PageResponse.<T>builder()
+                .data(page.getContent())
+                .page(page.getNumber())
+                .size(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .last(page.isLast())
+                .build();
+    }
 }
