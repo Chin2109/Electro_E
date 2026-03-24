@@ -16,5 +16,8 @@ public class CategoryService {
         Categories category = new Categories();
         category.setName(request.getName());
         category.setStatus(1L);
+        for(CategorySpecRequest.SpecRequest sp : request.getSpecs()) {
+
+        }
     }
 }

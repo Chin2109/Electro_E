@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "category")
 @SuperBuilder
 @NoArgsConstructor
 @Accessors(chain = true)
@@ -30,8 +30,9 @@ public class SpecAttribute implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long attributeId;
 
-    @Column(name = "category_id", nullable = false)
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Categories category;
 
     @Column(name = "name", nullable = false)
     private String name;

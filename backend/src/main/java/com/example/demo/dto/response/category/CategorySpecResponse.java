@@ -24,5 +24,6 @@ public class CategorySpecResponse {
         Long attributeId;
         Long categoryId;
         String name;
+        String unit;
     }
 }

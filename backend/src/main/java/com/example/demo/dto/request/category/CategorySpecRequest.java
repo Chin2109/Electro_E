@@ -21,5 +21,6 @@ public class CategorySpecRequest {
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class SpecRequest {
         String name;
+        String unit;
     }
 }

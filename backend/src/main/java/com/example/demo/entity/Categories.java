@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * $table.getTableComment()
@@ -35,5 +36,8 @@ public class Categories implements Serializable {
 
     @Column(name = "status", nullable = false)
     private Long status;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SpecAttribute> specs;
 
 }
