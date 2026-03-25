@@ -3,10 +3,12 @@ package com.example.demo.service;
 import com.example.demo.dto.request.brand.BrandCreationRequest;
 import com.example.demo.entity.Brands;
 import com.example.demo.repository.BrandsRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class BrandService {
     private final BrandsRepository brandsRepository;
 
