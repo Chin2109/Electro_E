@@ -30,9 +30,6 @@ public class Products implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
-    @Column(name = "brand_id", nullable = false)
-    private Long brandId;
-
     @Column(name = "slug", nullable = false, unique = true)
     private String slug;
 
@@ -50,5 +47,9 @@ public class Products implements Serializable {
 
     @Column(name = "status", nullable = false)
     private Long status;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id", nullable = false)
+    private Brands brand;
 
 }

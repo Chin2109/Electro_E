@@ -19,6 +19,7 @@ public class CategoryController {
     }
 
     //create category and spec attribute
+    //reject duplicate name
     @PostMapping("/create")
     ApiResponse<CategorySpecResponse> createCategory(@RequestBody CategorySpecRequest request) {
         return ApiResponse.<CategorySpecResponse>builder()
@@ -26,6 +27,8 @@ public class CategoryController {
                 .data(categoryService.createCategorySpec(request))
                 .build();
     }
+
+    //add attributes to a category
 
     //get all category and spec attribute
 
