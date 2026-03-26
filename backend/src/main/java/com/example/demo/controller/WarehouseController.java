@@ -4,10 +4,9 @@ import com.example.demo.dto.ApiResponse;
 import com.example.demo.dto.request.warehouse.CreateWarehouseRequest;
 import com.example.demo.entity.Warehouse;
 import com.example.demo.service.WarehouseService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/warehouse")
@@ -28,6 +27,13 @@ public class WarehouseController {
     }
 
     //get all warehouse and details
+    @GetMapping()
+    public ApiResponse<List<Warehouse>> getALl() {
+        return ApiResponse.<List<Warehouse>>builder()
+                .message("Warehouse list")
+                .data(warehouseService.getAll())
+                .build();
+    }
 
     //update
 

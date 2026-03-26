@@ -6,6 +6,8 @@ import com.example.demo.repository.WarehouseRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class WarehouseService {
@@ -20,11 +22,15 @@ public class WarehouseService {
         Warehouse warehouse = new Warehouse();
         warehouse.setName(request.getName());
         warehouse.setType(request.getType());
-        warehouse.setPhone(warehouse.getPhone());
-        warehouse.setAddress(warehouse.getAddress());
+        warehouse.setPhone(request.getPhone());
+        warehouse.setAddress(request.getAddress());
         warehouse.setStatus(1L);
 
         return warehouseRepository.save(warehouse);
+    }
+
+    public List<Warehouse> getAll() {
+        return warehouseRepository.findAll();
     }
 
 }
