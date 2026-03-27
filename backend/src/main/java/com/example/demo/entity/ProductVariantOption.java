@@ -30,4 +30,6 @@ public class ProductVariantOption implements Serializable {
     @EmbeddedId
     private ProductVariantOptionId id;
 
+    private String value;
+
 }
