@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +11,6 @@ import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 
-/**
- * $table.getTableComment()
- */
 @Entity
 @Getter
 @Setter
@@ -30,8 +28,10 @@ public class VariantAttribute implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long attributeId;
 
-    @Column(name = "product_id", nullable = false)
-    private Long productId;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    @JsonIgnore
+    private Products product;
 
     @Column(name = "code", nullable = false)
     private String code;

@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * $table.getTableComment()
@@ -51,5 +52,8 @@ public class Products implements Serializable {
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     private Brands brand;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VariantAttribute> variantAttributeList;
 
 }
