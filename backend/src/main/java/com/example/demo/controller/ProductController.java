@@ -33,7 +33,7 @@ public class ProductController {
 
     //delete product (for testing)
 
-    //add to product: category/spec; variant;
+    //add to product: category/spec;
 
     //add attribute to product
     @PostMapping("/add-attribute")

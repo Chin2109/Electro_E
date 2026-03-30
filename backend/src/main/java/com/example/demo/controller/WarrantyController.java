@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ApiResponse;
+import com.example.demo.dto.request.warranty.AddWarrantyProductRequest;
 import com.example.demo.dto.request.warranty.CreateWarrantyRequest;
 import com.example.demo.service.WarrantyService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,15 @@ public class WarrantyController {
         return ApiResponse.<String>builder()
                 .message("New Warranty Policy")
                 .data(warrantyService.createWarrantyPolicy(request))
+                .build();
+    }
+
+    //Add Warranty Policy to a Product
+    @PostMapping("/add-to-product")
+    ApiResponse<String> addToProduct(@RequestBody AddWarrantyProductRequest request) {
+        return ApiResponse.<String>builder()
+                .message("Warranty Policy & Product")
+                .data(warrantyService.addWarrantyToProduct(request))
                 .build();
     }
 }
