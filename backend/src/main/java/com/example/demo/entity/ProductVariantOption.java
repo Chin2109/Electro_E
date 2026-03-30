@@ -1,8 +1,7 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,6 +29,13 @@ public class ProductVariantOption implements Serializable {
     @EmbeddedId
     private ProductVariantOptionId id;
 
-    private String value;
+    //bỏ
+    private String value; //bỏ
+
+    @ManyToOne
+    @MapsId("variantId")
+    @JoinColumn(name = "variant_id")
+    @JsonIgnore
+    private ProductVariant variant;
 
 }

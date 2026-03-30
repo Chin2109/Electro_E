@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class ProductVariantOptionId {
     @Column(name = "variant_id", nullable = false)
-    private Long variantId;
+    private Long variantId; //tham chiếu đến ProductVariant
 
     @Column(name = "option_id", nullable = false)
-    private Long optionId;
+    private Long optionId;  //tham chiếu đến VariantAttribute
 }

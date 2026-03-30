@@ -21,6 +21,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Accessors(chain = true)
 @Table(name = "variant_option")
+//BỎ
 public class VariantOption implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -2,13 +2,10 @@ package com.example.demo.service;
 
 import com.example.demo.dto.request.product.AddAttributeRequest;
 import com.example.demo.dto.request.product.CreateProductRequest;
+import com.example.demo.dto.request.product.CreateProductVariantRequest;
 import com.example.demo.dto.response.product.ProductDetailResponse;
-import com.example.demo.entity.Brands;
-import com.example.demo.entity.Products;
-import com.example.demo.entity.VariantAttribute;
-import com.example.demo.repository.BrandsRepository;
-import com.example.demo.repository.ProductsRepository;
-import com.example.demo.repository.VariantAttributeRepository;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +17,28 @@ public class ProductService {
     private final ProductsRepository productsRepository;
     private final BrandsRepository brandsRepository;
     private final VariantAttributeRepository variantAttributeRepository;
+    private final ProductVariantRepository productVariantRepository;
+    private final VariantOption variantOption;
+    private final VariantOptionRepository variantOptionRepository;
+    private final ProductVariantOption productVariantOption;
+    private final ProductVariantOptionRepository productVariantOptionRepository;
 
     public ProductService(ProductsRepository productsRepository,
                           BrandsRepository brandsRepository,
-                          VariantAttributeRepository variantAttributeRepository) {
+                          VariantAttributeRepository variantAttributeRepository,
+                          ProductVariantRepository productVariantRepository,
+                          VariantOption variantOption,
+                          VariantOptionRepository variantOptionRepository,
+                          ProductVariantOption productVariantOption,
+                          ProductVariantOptionRepository productVariantOptionRepository) {
         this.productsRepository = productsRepository;
         this.brandsRepository = brandsRepository;
         this.variantAttributeRepository = variantAttributeRepository;
+        this.productVariantRepository = productVariantRepository;
+        this.variantOption = variantOption;
+        this.variantOptionRepository = variantOptionRepository;
+        this.productVariantOption = productVariantOption;
+        this.productVariantOptionRepository = productVariantOptionRepository;
     }
 
     @Transactional
@@ -74,5 +86,33 @@ public class ProductService {
 
         return products.getVariantAttributeList();
     }
+
+    public String createProductVariant(CreateProductVariantRequest request) {
+        ProductVariant variant = new ProductVariant();
+        variant.setProductId(request.getProductId());
+        variant.setBuyingPrice(request.getBuyingPrice());
+        variant.setSellingPrice(request.getSellingPrice());
+        variant.setSku(request.getSku());
+        variant.setStockQuantity(0L);
+        variant.setSoldQuantity(0L);
+        variant.setStatus(1L);
+        ProductVariant savedVariant = productVariantRepository.save(variant);
+
+        for(CreateProductVariantRequest.Option options : request.getOptions()) {
+           VariantOption op = new VariantOption();
+           op.setAttributeId(options.getVariantOptionId());
+           op.setValue(options.getValue());
+           VariantOption savedOp = variantOptionRepository.save(op);
+
+           ProductVariantOption o = new ProductVariantOption();
+           o.setVariant(savedVariant);
+           o.setOption(savedOp);
+           productVariantOptionRepository.save(o);
+        }
+
+        return "Created";
+    }
+
+
 
 }

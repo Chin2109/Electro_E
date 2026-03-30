@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * $table.getTableComment()
@@ -51,4 +52,8 @@ public class ProductVariant implements Serializable {
 
     @Column(name = "sku")
     private String sku;
+
+    @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ProductVariantOption> options;
+
 }
