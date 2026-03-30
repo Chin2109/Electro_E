@@ -17,5 +17,10 @@ public class WarrantyService {
         WarrantyPolicy warrantyPolicy = new WarrantyPolicy();
         warrantyPolicy.setName(request.getName());
         warrantyPolicy.setDescription(request.getDescription());
+        warrantyPolicy.setDurationMonths(request.getDurationMonths());
+        warrantyPolicy.setStatus(1L);
+        warrantyPolicyRepository.save(warrantyPolicy);
+
+        return "Created";
     }
 }

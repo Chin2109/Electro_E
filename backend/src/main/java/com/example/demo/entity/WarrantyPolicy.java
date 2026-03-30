@@ -39,4 +39,7 @@ public class WarrantyPolicy implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "status")
+    private Long status;
+
 }
