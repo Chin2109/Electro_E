@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.ApiResponse;
 import com.example.demo.dto.request.product.AddAttributeRequest;
 import com.example.demo.dto.request.product.CreateProductRequest;
+import com.example.demo.dto.request.product.CreateProductVariantRequest;
 import com.example.demo.dto.response.product.ProductDetailResponse;
 import com.example.demo.entity.VariantAttribute;
 import com.example.demo.service.ProductService;
@@ -53,6 +54,12 @@ public class ProductController {
     }
 
     //add product variant
-
+    @PostMapping("/variant/add")
+    ApiResponse<String> addVariant(@RequestBody CreateProductVariantRequest request) {
+        return ApiResponse.<String>builder()
+                .message("New variant created successfully")
+                .data(productService.createProductVariant(request))
+                .build();
+    }
 
 }

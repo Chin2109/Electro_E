@@ -29,8 +29,8 @@ public class ProductVariantOption implements Serializable {
     @EmbeddedId
     private ProductVariantOptionId id;
 
-    //bỏ
-    private String value; //bỏ
+    @Column(name = "value", nullable = false)
+    private String value;
 
     @ManyToOne
     @MapsId("variantId")

@@ -18,26 +18,17 @@ public class ProductService {
     private final BrandsRepository brandsRepository;
     private final VariantAttributeRepository variantAttributeRepository;
     private final ProductVariantRepository productVariantRepository;
-    private final VariantOption variantOption;
-    private final VariantOptionRepository variantOptionRepository;
-    private final ProductVariantOption productVariantOption;
     private final ProductVariantOptionRepository productVariantOptionRepository;
 
     public ProductService(ProductsRepository productsRepository,
                           BrandsRepository brandsRepository,
                           VariantAttributeRepository variantAttributeRepository,
                           ProductVariantRepository productVariantRepository,
-                          VariantOption variantOption,
-                          VariantOptionRepository variantOptionRepository,
-                          ProductVariantOption productVariantOption,
                           ProductVariantOptionRepository productVariantOptionRepository) {
         this.productsRepository = productsRepository;
         this.brandsRepository = brandsRepository;
         this.variantAttributeRepository = variantAttributeRepository;
         this.productVariantRepository = productVariantRepository;
-        this.variantOption = variantOption;
-        this.variantOptionRepository = variantOptionRepository;
-        this.productVariantOption = productVariantOption;
         this.productVariantOptionRepository = productVariantOptionRepository;
     }
 
@@ -98,16 +89,17 @@ public class ProductService {
         variant.setStatus(1L);
         ProductVariant savedVariant = productVariantRepository.save(variant);
 
+        //tạo product variant option gồm (cặp id, value)
         for(CreateProductVariantRequest.Option options : request.getOptions()) {
-           VariantOption op = new VariantOption();
-           op.setAttributeId(options.getVariantOptionId());
-           op.setValue(options.getValue());
-           VariantOption savedOp = variantOptionRepository.save(op);
+            ProductVariantOptionId id = new ProductVariantOptionId(savedVariant.getVariantId(),
+                    options.getVariantOptionId());
 
-           ProductVariantOption o = new ProductVariantOption();
-           o.setVariant(savedVariant);
-           o.setOption(savedOp);
-           productVariantOptionRepository.save(o);
+            ProductVariantOption opt = new ProductVariantOption();
+            opt.setId(id);
+            opt.setValue(options.getValue());
+            opt.setVariant(savedVariant);
+
+            productVariantOptionRepository.save(opt);
         }
 
         return "Created";

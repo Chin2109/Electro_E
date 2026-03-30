@@ -14,6 +14,6 @@ public class ProductVariantOptionId {
     @Column(name = "variant_id", nullable = false)
     private Long variantId; //tham chiếu đến ProductVariant
 
-    @Column(name = "option_id", nullable = false)
-    private Long optionId;  //tham chiếu đến VariantAttribute
+    @Column(name = "attribute_id", nullable = false)
+    private Long attributeId;
 }
