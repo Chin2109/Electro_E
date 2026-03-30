@@ -1,0 +1,2 @@
+ALTER TABLE warranty_policy
+ADD COLUMN status BIGINT NOT NULL DEFAULT 1;
