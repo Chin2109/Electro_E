@@ -21,6 +21,8 @@ public class ProductDetailResponse {
     String productName;
     Long brandId;
     String brandName;
+    String mainImg;
+    String imgs;
     String technicalInfo;
     String article;
     String slug;
@@ -75,10 +77,12 @@ public class ProductDetailResponse {
     public static class VariantResponse {
         Long variantId;
         String variantName;
+        String techInfo;
         BigDecimal sellingPrice;
         BigDecimal priceAfterDiscount;
         Long stock;
         List<Long> optionIds;
+        String mainImg;
 
         List<WarehouseResponse> warehouses;
         List<PromotionResponse> promotions;
@@ -106,6 +110,7 @@ public class ProductDetailResponse {
             String promotionName;
             String note;
             Long type;
+            Boolean isPercent;
             BigDecimal discountValue;
 
             @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
