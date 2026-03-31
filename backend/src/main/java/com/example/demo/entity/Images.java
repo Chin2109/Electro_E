@@ -30,8 +30,8 @@ public class Images implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;
 
-    @Column(name = "variant_id", nullable = false)
-    private Long variantId;
+    @Column(name = "product_id", nullable = false)
+    private Long productId;
 
     @Column(name = "path", nullable = false)
     private String path;

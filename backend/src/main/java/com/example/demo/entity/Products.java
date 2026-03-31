@@ -40,9 +40,6 @@ public class Products implements Serializable {
     @Column(name = "short_description")
     private String shortDescription;
 
-    @Column(name = "description")
-    private String description;
-
     @Column(name = "article")
     private String article;
 

@@ -31,10 +31,10 @@ public class ProductItem implements Serializable {
     private Long id;
 
     @Column(name = "provar_id", nullable = false)
-    private Long provarId;
+    private Long provarId;  //product variant
 
     @Column(name = "warehouse_id", nullable = false)
-    private Long warehouseId;
+    private Long warehouseId;   //đang trong kho nào
 
     @Column(name = "order_id")
     private Long orderId;

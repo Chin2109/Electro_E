@@ -40,7 +40,6 @@ public class ProductService {
         product.setName(request.getName());
         product.setSlug(request.getSlug());
         product.setShortDescription(request.getShortDescription());
-        product.setDescription(request.getDescription());
         product.setArticle(request.getArticle());
         product.setBrand(brand);
         product.setStatus(1L);
@@ -51,7 +50,6 @@ public class ProductService {
                 .productName(savedProduct.getName())
                 .brandId(brand.getBrandId())
                 .brandName(brand.getName())
-                .technicalInfo(savedProduct.getDescription())
                 .article(savedProduct.getArticle())
                 .slug(savedProduct.getSlug())
                 .warranties(new ArrayList<>())

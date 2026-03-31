@@ -25,6 +25,8 @@ services:
     container_name: elec-backend
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/elec?options=-c%20timezone=UTC
       - SPRING_DATASOURCE_USERNAME=appuser

@@ -38,6 +38,9 @@ public class ProductVariant implements Serializable {
     @Column(name = "status", nullable = false)
     private Long status;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "buying_price", nullable = false)
     private BigDecimal buyingPrice;
 
