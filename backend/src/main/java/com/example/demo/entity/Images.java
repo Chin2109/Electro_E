@@ -33,10 +33,14 @@ public class Images implements Serializable {
     @Column(name = "product_id", nullable = false)
     private Long productId;
 
+    @Column(name = "public_id")
+    private String publicId;
+
     @Column(name = "path", nullable = false)
     private String path;
 
     @Column(name = "is_thumbnail", nullable = false)
     private Boolean thumbnail;
+
 
 }
