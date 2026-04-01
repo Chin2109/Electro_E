@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     //exception tự định nghĩa
-    @ExceptionHandler(value = RuntimeException.class)
-    ResponseEntity<ApiResponse> handlingAppException() {
+    @ExceptionHandler(value = AppException.class)
+    ResponseEntity<ApiResponse> handlingAppException(AppException e) {
+        ErrorCode errorCode = e.getErrorCode();
+
         ApiResponse apiResponse = ApiResponse.builder()
-                .message(ErrorCode.UNCATEGORIZED_ERROR.getMessage())
+                .message(errorCode.getMessage())
                 .build();
 
         return ResponseEntity.badRequest().body(apiResponse);

@@ -53,4 +53,9 @@ public class Products implements Serializable {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VariantAttribute> variantAttributeList;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Images> images;
+
+
+
 }

@@ -30,8 +30,13 @@ public class Images implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;
 
-    @Column(name = "product_id", nullable = false)
-    private Long productId;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Products product;
+
+    @OneToOne
+    @JoinColumn(name = "variant_id", referencedColumnName = "variant_id")
+    private ProductVariant productVariant;
 
     @Column(name = "public_id")
     private String publicId;
