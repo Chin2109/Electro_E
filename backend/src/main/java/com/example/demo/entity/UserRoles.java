@@ -1,8 +1,6 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,5 +27,15 @@ public class UserRoles implements Serializable {
 
     @EmbeddedId
     private UserRolesId id;
+
+    @ManyToOne
+    @MapsId("userId") //vì có trong @EmbeddedId
+    @JoinColumn(name = "user_id") //tham chiếu khóa ngoại đến cột đã có trong table
+    private Users user;
+
+    @ManyToOne
+    @MapsId("roleId")
+    @JoinColumn(name = "role_id")
+    private Roles role;
 
 }
