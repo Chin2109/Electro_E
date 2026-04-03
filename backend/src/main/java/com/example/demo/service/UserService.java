@@ -54,7 +54,7 @@ public class UserService {
     public List<Roles> getRole(Users user) {
         var id = user.getUserId();
 
-        List<UserRoles> userRoles = userRolesRepository.findByUserId(id);
+        List<UserRoles> userRoles = userRolesRepository.findByUser(user);
 
         return userRoles.stream()
                 .map(UserRoles::getRole)

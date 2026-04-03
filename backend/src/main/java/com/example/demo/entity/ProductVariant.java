@@ -59,7 +59,8 @@ public class ProductVariant implements Serializable {
     @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
     List<ProductVariantOption> options;
 
-    @OneToOne(mappedBy = "productVariant", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "image_id")
     private Images image;
 
 }

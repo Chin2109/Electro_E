@@ -34,10 +34,6 @@ public class Images implements Serializable {
     @JoinColumn(name = "product_id")
     private Products product;
 
-    @OneToOne
-    @JoinColumn(name = "variant_id", referencedColumnName = "variant_id")
-    private ProductVariant productVariant;
-
     @Column(name = "public_id")
     private String publicId;
 
@@ -46,6 +42,4 @@ public class Images implements Serializable {
 
     @Column(name = "is_thumbnail", nullable = false)
     private Boolean thumbnail;
-
-
 }
