@@ -14,4 +14,6 @@ public interface RolesRepository extends JpaRepository<Roles, Long>, JpaSpecific
             "LEFT JOIN Permissions p ON rp.rolePermissionsId.permissionId = p.permissionId " +
             "WHERE r.roleId = :roleId")
     Optional<Roles> findRoleWithPermissions(@Param("roleId") Long roleId);
+
+    Optional<Roles> findByName(String customer);
 }

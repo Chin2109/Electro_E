@@ -12,7 +12,10 @@ public enum ErrorCode {
     INVALID_FILE_TYPE(1002, "Định dạng file không hợp lệ (chỉ chấp nhận jpg, png)", HttpStatus.BAD_REQUEST),
     FILE_TOO_LARGE(1003, "Kích thước file quá lớn (tối đa 10MB)", HttpStatus.PAYLOAD_TOO_LARGE),
     EMPTY_FILE(1004, "Vui lòng chọn ít nhất một hình ảnh", HttpStatus.BAD_REQUEST),
-    USER_EXISTED(1005, "Username đã tồn tại", HttpStatus.BAD_REQUEST)
+    USER_EXISTED(1005, "Username đã tồn tại", HttpStatus.BAD_REQUEST),
+    USER_NOT_EXISTED(1006, "Username không tồn tại", HttpStatus.BAD_REQUEST),
+    USER_LOCKED(1007,"Người dùng đã bị khóa", HttpStatus.BAD_REQUEST),
+    UNAUTHENTICATED(1008, "Đăng nhập thất bại (Sai mật khẩu, token expire)", HttpStatus.BAD_REQUEST),
     ;
 
     private int code;

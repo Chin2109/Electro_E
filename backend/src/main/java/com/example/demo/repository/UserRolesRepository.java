@@ -10,4 +10,6 @@ import java.util.List;
 public interface UserRolesRepository extends JpaRepository<UserRoles, Long>, JpaSpecificationExecutor<UserRoles> {
 
     List<UserRoles> findByUser(Users user);
+
+    List<UserRoles> findAllByUserId(Long userId);
 }

@@ -1,158 +1,119 @@
 package com.example.demo.configuration;
 
+import com.example.demo.dto.ApiResponse;
+import com.example.demo.dto.request.auth.IntrospectRequest;
+import com.example.demo.service.AuthenticationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtException;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
-//Yêu cầu muốn truy cập endpoints nhất định thì cần jwt phù hợp (Authorization: Author type: Bearer token)
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity // Bật @PreAuthorize
 public class SecurityConfig {
-//    @Value("${jwt.signer-key}")
-//    private String signerKey;
-//
-//    @Autowired
-//    private AuthenticationService authenticationService;
+
+    // Sửa lại cho đúng tên biến trong .env
+    @Value("${jwt.signerKey}")
+    private String signerKey;
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-
-        //1. Quản lý truy cập các endpoints
         httpSecurity
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(request ->
-                        request
-                                .anyRequest().permitAll()
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF cho JWT
+                .authorizeHttpRequests(request -> request
+                        // Cho phép các request public (Login, Introspect, các API xem sản phẩm công khai)
+                        .requestMatchers(HttpMethod.POST,"/auth/register", "/auth/login", "/auth/introspect", "/auth/logout").permitAll()
+
+                        // Các request khác bắt buộc phải đăng nhập
+                        .anyRequest().authenticated()
+                );
+
+        // Cấu hình Resource Server để xử lý Bearer Token
+        httpSecurity.oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(jwtConfigurer -> jwtConfigurer
+                        .decoder(customJwtDecoder())
+                        .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                .authenticationEntryPoint(customAuthenticationEntryPoint()) // Nên tách class riêng cho sạch
         );
 
-//        //2. Bảo Spring Security: đây là Resource Server (Nhận kèm Bearer Token)
-//        //Khi nhận Token, xử lý bằng customJWTDecoder() để decode
-//        //Xử lý xong thì map claims sang GrantedAuthority bằng jwtAuthenticationConverter()
-//        httpSecurity.oauth2ResourceServer(oath2 ->
-//                oath2.jwt(jwtConfigurer ->
-//                        jwtConfigurer.decoder(customJwtDecoder())
-//                                .jwtAuthenticationConverter(jwtAuthenticationConverter()))
-//        );
-//
-//        //3. Handling các exception của security jwt (user có token nhưng không đủ quyền; user chưa đăng nhập; token invalid)
-//        //Các exception được throw từ layer security thì ko catch ở global exception handling được
-//        httpSecurity
-//                .exceptionHandling(exception ->
-//                        exception.accessDeniedHandler(customAccessDeniedHandler())
-//                                .authenticationEntryPoint(customAuthenticationEntryPoint())
-//                );
-//
-//        // Disable CSRF vì nó là để bảo vệ browser khi browser gửi cookie lên server
-//        // JWT được gửi qua Authorization header (không phải cookie),
-//        // nên trình duyệt không tự động gửi thông tin xác thực → không cần CSRF.
-//        httpSecurity.csrf(AbstractHttpConfigurer::disable);
-//
         return httpSecurity.build();
     }
-//
-//    @Bean
-//    public JwtDecoder customJwtDecoder() {
-//        SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HS512");
-//        NimbusJwtDecoder nimbusDecoder = NimbusJwtDecoder
-//                .withSecretKey(secretKeySpec)
-//                .macAlgorithm(MacAlgorithm.HS512)
-//                .build();
-//
-//        //introspect token để đảm bảo token ko bị revoke trước khi decode
-//        return (String token) -> {
-//
-//            try {
-//                var response = authenticationService.introspect(
-//                        IntrospectRequest.builder()
-//                                .token(token)
-//                                .build()
-//                );
-//
-//                if (!response.isValid()) {
-//                    throw new JwtException("Token is invalid!");
-//                }
-//
-//                // Token hợp lệ → decode bằng NimbusJwtDecoder
-//                return nimbusDecoder.decode(token);
-//
-//            } catch (ParseException | JOSEException e) {
-//                throw new JwtException(e.getMessage());
-//            }
-//        };
-//    }
-//
-//    @Bean
-//    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-//        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-//
-//        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
-//            Collection<GrantedAuthority> authorities = new ArrayList<>();
-//
-//            //Lấy role từ claim "role" rồi thêm vào authorities
-//            //@PreAuthorize("hasRole('XXX')"): check trong list authorities có tồn tại ROLE_XXX ko
-//            List<String> roles = jwt.getClaimAsStringList("role");
-//            if(roles != null) {
-//                authorities.addAll(
-//                        roles.stream()
-//                                .map(r -> new SimpleGrantedAuthority(r))
-//                                .collect(Collectors.toList())
-//                );
-//            }
-//
-//            //Lấy permission từ claim "permission" rùi thêm vào authorities
-//            //@PreAuthorize("hasAuthority('YYY')"): check trong authorities có tồn tại YYY hok
-//            List<String> permissions = jwt.getClaimAsStringList("permission");
-//            if(permissions != null) {
-//                authorities.addAll(
-//                        permissions.stream()
-//                                .map(p -> new SimpleGrantedAuthority(p))
-//                                .collect(Collectors.toList())
-//                );
-//            }
-//
-//            return authorities;
-//        });
-//
-//        return converter;
-//    }
-//
-//    @Bean
-//    public AccessDeniedHandler customAccessDeniedHandler() {
-//        return (request, response, accessDeniedException) -> {
-//            response.setStatus(HttpStatus.FORBIDDEN.value());
-//            response.setContentType("application/json");
-//
-//            ApiResponse apiResponse = ApiResponse.builder()
-//                    .code(ErrorCode.UNAUTHORIZED.getCode())
-//                    .message(ErrorCode.UNAUTHORIZED.getMessage())
-//                    .build();
-//
-//            ObjectMapper mapper = new ObjectMapper();
-//            String responseBody = mapper.writeValueAsString(apiResponse);
-//
-//            response.getWriter().write(responseBody);
-//        };
-//    }
-//
-//    @Bean
-//    public AuthenticationEntryPoint customAuthenticationEntryPoint() {
-//        return (request, response, authException) -> {
-//            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-//            response.setContentType("application/json");
-//
-//            ApiResponse apiResponse = ApiResponse.builder()
-//                    .code(ErrorCode.UNAUTHENTICATED.getCode())
-//                    .message(ErrorCode.UNAUTHENTICATED.getMessage())
-//                    .build();
-//
-//            ObjectMapper mapper = new ObjectMapper();
-//            String responseBody = mapper.writeValueAsString(apiResponse);
-//
-//            response.getWriter().write(responseBody);
-//        };
-//        }
+
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+            // Lấy chuỗi "ROLE_ADMIN PRODUCT_READ..." từ claim "scope"
+            String scope = jwt.getClaimAsString("scope");
+            if (scope == null || scope.isEmpty()) return List.of();
+
+            // Tách chuỗi bằng dấu cách và map sang SimpleGrantedAuthority
+            return Arrays.stream(scope.split(" "))
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList());
+        });
+        return converter;
     }
+
+    @Bean
+    public JwtDecoder customJwtDecoder() {
+        SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HS512");
+        NimbusJwtDecoder nimbusDecoder = NimbusJwtDecoder
+                .withSecretKey(secretKeySpec)
+                .macAlgorithm(MacAlgorithm.HS512)
+                .build();
+
+        return token -> {
+            try {
+                // Gọi introspect của Service để check Redis (Logout)
+                var response = authenticationService.introspect(new IntrospectRequest(token));
+                if (!response.isValid()) {
+                    throw new JwtException("Token đã bị hủy (Logged out) hoặc không hợp lệ");
+                }
+                return nimbusDecoder.decode(token);
+            } catch (Exception e) {
+                throw new JwtException(e.getMessage());
+            }
+        };
+    }
+
+    // Tự định nghĩa EntryPoint để trả về JSON chuẩn cho FE dễ xử lý
+    @Bean
+    public AuthenticationEntryPoint customAuthenticationEntryPoint() {
+        return (request, response, authException) -> {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+            ApiResponse<?> apiResponse = ApiResponse.builder()
+                    .message("Bạn chưa đăng nhập hoặc Token hết hạn")
+                    .build();
+
+            new ObjectMapper().writeValue(response.getOutputStream(), apiResponse);
+        };
+    }
+}
