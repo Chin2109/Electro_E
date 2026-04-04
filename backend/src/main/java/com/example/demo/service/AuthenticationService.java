@@ -229,7 +229,7 @@ public class AuthenticationService {
         StringJoiner stringJoiner = new StringJoiner(" ");
 
         // 1. Lấy danh sách Role từ bảng trung gian UserRoles
-        List<UserRoles> userRoles = userRolesRepository.findAllByUserId(user.getUserId());
+        List<UserRoles> userRoles = userRolesRepository.findAllByUser_UserId(user.getUserId());
 
         if (!userRoles.isEmpty()) {
             userRoles.forEach(ur -> {

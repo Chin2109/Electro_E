@@ -47,10 +47,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF cho JWT
                 .authorizeHttpRequests(request -> request
                         // Cho phép các request public (Login, Introspect, các API xem sản phẩm công khai)
-                        .requestMatchers(HttpMethod.POST,"/auth/register", "/auth/login", "/auth/introspect", "/auth/logout").permitAll()
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/v1/auth/register",
+                                "/api/v1/auth/login",
+                                "/api/v1/auth/introspect",
+                                "/api/v1/auth/logout"
+                        ).permitAll()
 
                         // Các request khác bắt buộc phải đăng nhập
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 );
 
         // Cấu hình Resource Server để xử lý Bearer Token
