@@ -11,13 +11,24 @@ services:
       TZ: Asia/Ho_Chi_Minh
     command: ["postgres", "-c", "timezone=UTC"]
     ports:
-      - "5433:5432"
+      - "5433:5432" # Máy thật gọi 5433 -> Docker dẫn vào 5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U appuser -d elec"]
       interval: 10s
       timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:alpine
+    container_name: elec-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
       retries: 5
 
   backend:
@@ -28,12 +39,18 @@ services:
     env_file:
       - .env
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/elec?options=-c%20timezone=UTC
+      # Sử dụng tên service 'postgres' và cổng nội bộ 5432
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/elec?options=-c%20timezone=UTC
       - SPRING_DATASOURCE_USERNAME=appuser
       - SPRING_DATASOURCE_PASSWORD=apppass
+      # Cấu hình để backend tìm thấy redis trong cùng network
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
       - JAVA_TOOL_OPTIONS=-Duser.timezone=UTC
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
 
 volumes:

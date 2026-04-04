@@ -22,9 +22,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         //1. Quản lý truy cập các endpoints
-        httpSecurity.authorizeHttpRequests(request ->
+        httpSecurity
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(request ->
                         request
-
                                 .anyRequest().permitAll()
         );
 
