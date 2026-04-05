@@ -13,6 +13,7 @@ import java.util.List;
 public class CategorySpecRequest {
     String name;
     List<SpecRequest> specs;
+    Long status;
 
     @Data
     @Builder
@@ -22,5 +23,6 @@ public class CategorySpecRequest {
     public static class SpecRequest {
         String name;
         String unit;
+        Long status;
     }
 }

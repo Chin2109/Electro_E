@@ -1,4 +1,4 @@
-package com.example.demo.dto.request.brand;
+package com.example.demo.dto.request.category;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BrandCreationRequest {
+public class AddSpecAttributeToProduct {
+    Long attributeId;
     String name;
-
 }

@@ -50,12 +50,18 @@ public class Products implements Serializable {
     @JoinColumn(name = "brand_id", nullable = false)
     private Brands brand;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Categories category;
+
+    @ManyToOne
+    @JoinColumn(name = "supplier_id", nullable = false)
+    private Supplier supplier;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VariantAttribute> variantAttributeList;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Images> images;
-
-
 
 }

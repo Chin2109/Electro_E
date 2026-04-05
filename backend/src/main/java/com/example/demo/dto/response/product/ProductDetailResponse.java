@@ -22,7 +22,7 @@ public class ProductDetailResponse {
     Long brandId;
     String brandName;
     String mainImg;
-    String imgs;
+    List<CloudinaryResponse> imgs;
     String technicalInfo;
     String article;
     String slug;

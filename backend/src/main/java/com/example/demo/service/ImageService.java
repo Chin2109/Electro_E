@@ -22,7 +22,7 @@ public class ImageService {
     private Cloudinary cloudinary;
 
 
-    private CloudinaryResponse uploadImage(MultipartFile file) {
+    public CloudinaryResponse uploadImage(MultipartFile file) {
         if (file.isEmpty()) {
             throw new AppException(ErrorCode.EMPTY_FILE);
         }

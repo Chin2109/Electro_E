@@ -40,4 +40,7 @@ public class Categories implements Serializable {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SpecAttribute> specs;
 
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Products> products;
+
 }

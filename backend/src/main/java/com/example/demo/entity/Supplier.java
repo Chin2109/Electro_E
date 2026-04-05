@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * $table.getTableComment()
@@ -53,5 +54,8 @@ public class Supplier implements Serializable {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Products> products;
 
 }

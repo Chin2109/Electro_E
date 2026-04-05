@@ -7,6 +7,7 @@ import com.example.demo.dto.request.product.CreateProductVariantRequest;
 import com.example.demo.dto.response.product.ProductDetailResponse;
 import com.example.demo.entity.VariantAttribute;
 import com.example.demo.service.ProductService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +22,9 @@ public class ProductController {
     }
 
     //create product
-    @PostMapping("/create")
-    ApiResponse<ProductDetailResponse> createProduct(@RequestBody CreateProductRequest request) {
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ApiResponse<ProductDetailResponse> createProduct(@ModelAttribute CreateProductRequest request) {
+        // Lúc này request.getImgs() sẽ chứa danh sách các file ảnh
         return ApiResponse.<ProductDetailResponse>builder()
                 .message("New Product created successfully")
                 .data(productService.createProduct(request))

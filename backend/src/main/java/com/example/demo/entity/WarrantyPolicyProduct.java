@@ -35,4 +35,6 @@ public class WarrantyPolicyProduct implements Serializable {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
+
+
 }
